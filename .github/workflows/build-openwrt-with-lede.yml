@@ -90,42 +90,42 @@ jobs:
           sudo chown ${USER}:${GROUPS} /workdir
           echo "::set-output name=status::success"
 
-#       - name: Clone source code
-#         working-directory: /workdir
-#         run: |
-#           df -hT ${PWD}
-#           git clone --depth 1 ${REPO_URL} -b ${REPO_BRANCH} openwrt
-#           ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
+      - name: Clone source code
+        working-directory: /workdir
+        run: |
+          df -hT ${PWD}
+          git clone --depth 1 ${REPO_URL} -b ${REPO_BRANCH} openwrt
+          ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
 
-#       - name: Load custom feeds
-#         run: |
-#           [[ -e "${FEEDS_CONF}" ]] && cp -f ${FEEDS_CONF} openwrt/feeds.conf.default
-#           chmod +x ${DIY_P1_SH}
-#           cd openwrt
-#           ${GITHUB_WORKSPACE}/${DIY_P1_SH}
+      - name: Load custom feeds
+        run: |
+          [[ -e "${FEEDS_CONF}" ]] && cp -f ${FEEDS_CONF} openwrt/feeds.conf.default
+          chmod +x ${DIY_P1_SH}
+          cd openwrt
+          ${GITHUB_WORKSPACE}/${DIY_P1_SH}
 
-#       - name: Update feeds
-#         run: cd openwrt && ./scripts/feeds update -a
+      - name: Update feeds
+        run: cd openwrt && ./scripts/feeds update -a
 
-#       - name: Install feeds
-#         run: cd openwrt && ./scripts/feeds install -a
+      - name: Install feeds
+        run: cd openwrt && ./scripts/feeds install -a
 
-#       - name: Load custom configuration
-#         run: |
-#           [[ -d "files" ]] && mv -f files openwrt/files
-#           [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
-#           chmod +x ${DIY_P2_SH}
-#           cd openwrt
-#           ${GITHUB_WORKSPACE}/${DIY_P2_SH}
+      - name: Load custom configuration
+        run: |
+          [[ -d "files" ]] && mv -f files openwrt/files
+          [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
+          chmod +x ${DIY_P2_SH}
+          cd openwrt
+          ${GITHUB_WORKSPACE}/${DIY_P2_SH}
 
-#       - name: Download package
-#         id: package
-#         run: |
-#           cd openwrt
-#           make defconfig
-#           make download -j8
-#           find dl -size -1024c -exec ls -l {} \;
-#           find dl -size -1024c -exec rm -f {} \;
+      - name: Download package
+        id: package
+        run: |
+          cd openwrt
+          make defconfig
+          make download -j8
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
 
 #       - name: Compile the firmware
 #         id: compile
